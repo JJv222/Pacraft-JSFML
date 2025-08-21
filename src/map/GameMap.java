@@ -8,7 +8,7 @@ import org.jsfml.system.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 
-import static logger.LoggerConstants.*;
+import static logger.LoggerBase.*;
 
 public final class GameMap extends MapBase {
    public GameMap(int height, int width, DifficultyLevel level) {
@@ -48,7 +48,7 @@ public final class GameMap extends MapBase {
    @Override
    protected List<List<Sprite>> createSpriteMap(int height, int width, DifficultyLevel level, List<List<Character>> characterMap) {
       List<List<Sprite>> result = new ArrayList<>();
-      logger.createErrorMessage(LoggerLevel.INFO, MAP_INIT_START);
+      logger.log(LoggerLevel.INFO, MAP_INIT_START);
 
       for (int y = 0; y < characterMap.size(); y++) {
          List<Sprite> row = new ArrayList<>();
@@ -58,7 +58,7 @@ public final class GameMap extends MapBase {
          }
          result.add(row);
       }
-      logger.createErrorMessage(LoggerLevel.INFO, MAP_INIT_END);
+      logger.log(LoggerLevel.INFO, MAP_INIT_END);
       return result;
    }
 

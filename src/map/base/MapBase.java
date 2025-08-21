@@ -10,7 +10,7 @@ import utils.TextureUtils;
 
 import java.util.List;
 
-import static logger.LoggerConstants.MAP_CACHE_NOT_FOUND;
+import static logger.LoggerBase.MAP_CACHE_NOT_FOUND;
 
 public abstract class MapBase {
    protected final Logger logger;
@@ -40,7 +40,7 @@ public abstract class MapBase {
       Texture texture = TextureUtils.TEXTURES.get(texturePath);
 
       if (texture == null) {
-         logger.createErrorMessage(LoggerLevel.ERROR, String.format(MAP_CACHE_NOT_FOUND, texturePath));
+         logger.log(LoggerLevel.ERROR, String.format(MAP_CACHE_NOT_FOUND, texturePath));
          throw new RuntimeException( String.format(MAP_CACHE_NOT_FOUND, texturePath));
       }
 
