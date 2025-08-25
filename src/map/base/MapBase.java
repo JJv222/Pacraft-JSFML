@@ -1,7 +1,5 @@
 package map.base;
 
-import logger.Logger;
-import logger.LoggerLevel;
 import map.DifficultyLevel;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.graphics.Texture;
@@ -9,16 +7,19 @@ import org.jsfml.system.Vector2f;
 import utils.TextureUtils;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import logger.LoggerConfig;
 
-import static logger.LoggerBase.MAP_CACHE_NOT_FOUND;
+import static logger.LoggerConfig.getLogger;
+import static map.MapConstants.TEXTURE_SIZE;
 
 public abstract class MapBase {
    protected final Logger logger;
-   private final static Float TEXTURE_SIZE = 50f;
    private final int height;
    private final int width;
    private final DifficultyLevel level;
-   private final List<List<Character>> characterMap;
+   private final Character[][]characterMap;
 
    protected final List<List<Sprite>> spriteMap;
 
@@ -26,22 +27,22 @@ public abstract class MapBase {
       this.height = height;
       this.width = width;
       this.level = level;
-      this.logger = new Logger(getClass());
+      this.logger = getLogger(MapBase.class);
       this.characterMap = initMap();
       spriteMap = createSpriteMap(height, width, level, characterMap);
    }
 
-   protected abstract List<List<Character>> initMap();
+   protected abstract Character[][] initMap();
 
-   protected abstract List<List<Sprite>> createSpriteMap(int height, int width, DifficultyLevel level, List<List<Character>> characterMap);
+   protected abstract List<List<Sprite>> createSpriteMap(int height, int width, DifficultyLevel level, Character[][] characterMap);
 
    protected Sprite addSprite(final String texturePath, final Vector2f position) {
       Sprite sprite = new Sprite();
       Texture texture = TextureUtils.TEXTURES.get(texturePath);
 
       if (texture == null) {
-         logger.log(LoggerLevel.ERROR, String.format(MAP_CACHE_NOT_FOUND, texturePath));
-         throw new RuntimeException( String.format(MAP_CACHE_NOT_FOUND, texturePath));
+         logger.log(Level.SEVERE, String.format(LoggerConfig.MAP_CACHE_NOT_FOUND, texturePath));
+         throw new RuntimeException(String.format(LoggerConfig.MAP_CACHE_NOT_FOUND, texturePath));
       }
 
       sprite.setTexture(texture);
@@ -54,7 +55,7 @@ public abstract class MapBase {
    }
 
 
-   public List<List<Character>> getCharacterMap() {
+   public Character[][] getCharacterMap() {
       return characterMap;
    }
 

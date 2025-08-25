@@ -1,7 +1,7 @@
 package logger;
 
 public enum LoggerLevel {
-   INFO,ERROR;
+   INFO, DEBUG, ERROR;
 
    @Override
    public String toString() {

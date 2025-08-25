@@ -1,3 +1,4 @@
+import logger.LoggerConfig;
 import map.DifficultyLevel;
 import map.GameMap;
 import map.MapConstants;
@@ -6,6 +7,7 @@ import org.jsfml.graphics.RenderWindow;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.window.VideoMode;
 import org.jsfml.window.event.Event;
+import pacman.Pacman;
 
 import java.util.List;
 
@@ -14,7 +16,9 @@ public class Game {
    private final int frameLimit;
    private final DifficultyLevel level;
    private final GameMap map;
+   private final Pacman pacman;
    private final String title;
+   private int score;
 
    public Game(String title, int frameLimit, DifficultyLevel level, int height, int weight) {
       this.title = title;
@@ -23,6 +27,8 @@ public class Game {
       this.frameLimit = frameLimit;
       this.level = level;
       this.map = new GameMap(height,weight,level);
+      this.pacman = new Pacman();
+      LoggerConfig.setup(logger.LoggerLevel.INFO);
    }
 
    public void run(){
@@ -50,6 +56,7 @@ public class Game {
             window.draw(sprite);
          }
       }
+      window.draw(pacman.getSprite());
    }
 
 }

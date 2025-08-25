@@ -1,23 +1,24 @@
 package map;
 
-import logger.LoggerLevel;
 import map.base.MapBase;
 import org.jsfml.graphics.Sprite;
 import org.jsfml.system.Vector2f;
+import logger.LoggerConfig;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static logger.LoggerBase.*;
+import java.util.logging.Level;
 
 public final class GameMap extends MapBase {
+   private Character[][] coinMap;
+
    public GameMap(int height, int width, DifficultyLevel level) {
       super(height, width, level);
    }
 
    @Override
-   protected List<List<Character>> initMap() {
-      List<String> sketch = List.of(
+   protected Character[][] initMap() {
+      String[] sketch = {
          "!###################!",
          "!#?.E?...?X?..X?E.?#!",
          "!#.##.###.#.###.##.#!",
@@ -39,43 +40,43 @@ public final class GameMap extends MapBase {
          "!#.#.####.#.###.##.#!",
          "!#?E?X...?.?..X?.E?#!",
          "!###################!"
-      );
-      return sketch.stream()
-         .map(row -> row.chars().mapToObj(c -> (char) c).toList())
-         .toList();
+      };
+      final Character[][] map = new Character[sketch.length][sketch[0].length()];
+      coinMap = new Character[sketch.length][sketch[0].length()];
+      for (int y = 0; y < sketch.length; y++) {
+         for (int x = 0; x < sketch[y].length(); x++) {
+            final char element = sketch[y].charAt(x);
+            map[y][x] = element;
+            if(element == '.'){
+               coinMap[y][x] = element;
+            }
+         }
+      }
+      return map;
    }
 
    @Override
-   protected List<List<Sprite>> createSpriteMap(int height, int width, DifficultyLevel level, List<List<Character>> characterMap) {
+   protected List<List<Sprite>> createSpriteMap(int height, int width, DifficultyLevel level, Character[][] characterMap) {
       List<List<Sprite>> result = new ArrayList<>();
-      logger.log(LoggerLevel.INFO, MAP_INIT_START);
+      logger.log(Level.INFO, LoggerConfig.MAP_INIT_START);
 
-      for (int y = 0; y < characterMap.size(); y++) {
+      for (int y = 0; y < characterMap.length; y++) {
          List<Sprite> row = new ArrayList<>();
-         for (int x = 0; x < characterMap.get(y).size(); x++) {
-            String texturePath = CharMapToTextureName(characterMap.get(y).get(x));
+         for (int x = 0; x < characterMap[y].length; x++) {
+            String texturePath = CharMapToTextureName(characterMap[y][x]);
             row.add(addSprite(texturePath, new Vector2f(x, y)));
          }
          result.add(row);
       }
-      logger.log(LoggerLevel.INFO, MAP_INIT_END);
+      logger.log(Level.INFO, LoggerConfig.MAP_INIT_END);
       return result;
    }
 
    public String CharMapToTextureName(final char character) {
       return switch (character) {
          case '#' -> "wall.png";
-//         case '.' -> "path.png";
-//         case 'P' -> "steve.jpg";
-//         case 'D' -> "drzwi.png";
-//         case 'X' -> "dziura.png";
-//         case 'E' -> "energizer.png";
-//         case 'B' -> "blaze.png";
-//         case 'H' -> "zoombie.png";
-//         case 'K' -> "creeper.jpg";
-//         case '?' -> "corn.png";
+         case 'D' -> "drzwi.png";
          case '!' -> "blackBox.png";
-//         case ' ' -> "path.png";
          default -> "path.png";
       };
    }

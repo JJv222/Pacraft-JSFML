@@ -3,6 +3,7 @@ package map;
 import org.jsfml.system.Vector2f;
 
 public interface MapConstants {
+   float TEXTURE_SIZE = 50f;
    int FRAME_LIMIT = 60;
    int MAP_WIDTH = 21;
    int MAP_HEIGHT = 21;
