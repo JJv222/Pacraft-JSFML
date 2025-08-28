@@ -9,9 +9,9 @@ import utils.TextureUtils;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import logger.LoggerConfig;
+import logger.LoggerUtils;
 
-import static logger.LoggerConfig.getLogger;
+import static logger.LoggerUtils.getLogger;
 import static map.MapConstants.TEXTURE_SIZE;
 
 public abstract class MapBase {
@@ -28,8 +28,10 @@ public abstract class MapBase {
       this.width = width;
       this.level = level;
       this.logger = getLogger(MapBase.class);
+      logger.info(LoggerUtils.MAP_INIT_START);
       this.characterMap = initMap();
       spriteMap = createSpriteMap(height, width, level, characterMap);
+      logger.info(LoggerUtils.MAP_INIT_END);
    }
 
    protected abstract Character[][] initMap();
@@ -41,8 +43,8 @@ public abstract class MapBase {
       Texture texture = TextureUtils.TEXTURES.get(texturePath);
 
       if (texture == null) {
-         logger.log(Level.SEVERE, String.format(LoggerConfig.MAP_CACHE_NOT_FOUND, texturePath));
-         throw new RuntimeException(String.format(LoggerConfig.MAP_CACHE_NOT_FOUND, texturePath));
+         logger.severe(String.format(LoggerUtils.MAP_CACHE_NOT_FOUND, texturePath));
+         throw new RuntimeException(String.format(LoggerUtils.MAP_CACHE_NOT_FOUND, texturePath));
       }
 
       sprite.setTexture(texture);

@@ -1,7 +1,5 @@
 package utils;
 
-import logger.LoggerConfig;
-
 import java.util.Arrays;
 import java.util.logging.Logger;
 

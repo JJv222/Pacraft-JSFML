@@ -1,7 +1,6 @@
 package utils;
 
-import logger.LoggerConfig;
-import logger.LoggerLevel;
+import logger.LoggerUtils;
 import org.jsfml.graphics.Texture;
 
 import java.io.IOException;
@@ -19,8 +18,9 @@ public class TextureUtils extends ResourcePath {
    protected static final String TEXTURE_PATH = "Textures";
 
    static {
-      logger = LoggerConfig.getLogger(TextureUtils.class);
+      logger = LoggerUtils.getLogger(TextureUtils.class);
       try {
+         logger.info(LoggerUtils.TEXTURE_LOADING_START);
          Set<String> textureFiles = listFilesUsingFilesList(PATH_BASE + "/Textures");
          TEXTURES = new HashMap<>();
          for (String fileName : textureFiles) {
@@ -28,14 +28,15 @@ public class TextureUtils extends ResourcePath {
                Texture texture = new Texture();
                texture.loadFromFile(Paths.get(createPath(TEXTURE_PATH, fileName)));
                TEXTURES.put(fileName, texture);
+               logger.info(String.format(LoggerUtils.TEXTURE_LOADING_SUCCESS, fileName));
             } catch (IOException e) {
-               // System.err.println("Błąd ładowania tekstury " + fileName + ": " + e.getMessage());
+               logger.severe(String.format(LoggerUtils.TEXTURE_LOADING_ERROR, fileName));
             }
          }
-
+         logger.info(LoggerUtils.TEXTURE_LOADING_COMPLETE);
       } catch (IOException e) {
-
-         throw new RuntimeException("Nie można załadować tekstur", e);
+         logger.severe("Cannot load textures: " + e.getMessage());
+         throw new RuntimeException("Cannot load textures", e);
       }
    }
 
